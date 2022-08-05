@@ -5,10 +5,8 @@ use colored::Colorize;
 pub fn input(message: &str) -> String {
   let mut line = String::new();
   print!("{}", message);
-  io::Write::flush(&mut io::stdout()).expect("Flushing error");
-  io::stdin()
-    .read_line(&mut line)
-    .expect("Ошибка чтение строки");
+  io::Write::flush(&mut io::stdout()).expect("Flush Error");
+  io::stdin().read_line(&mut line).expect("Wtf");
   line
 }
 
