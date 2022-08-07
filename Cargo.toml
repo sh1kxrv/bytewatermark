@@ -5,3 +5,4 @@ edition = "2021"
 
 [dependencies]
 terminal = { path = "lib/terminal", version = "*"}
+rand = "0.8.5"
