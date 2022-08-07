@@ -42,7 +42,7 @@ fn xor(raw: &Vec<u8>, password: &[u8]) -> Vec<u8> {
 }
 
 fn generate_junk(junk_length: u8) -> Vec<u8> {
-  let signature: [u8; 6] = [0x0, 0x0, 0xaf, 0xf, 0xA, 0xF];
+  let signature: [u8; 6] = [0x0, 0x0, 0xaf, 0xf, 0xaf, 0xF];
   let mut result: Vec<u8> = Vec::new();
   result.extend_from_slice(&signature);
   for _ in 0..junk_length {
@@ -51,21 +51,21 @@ fn generate_junk(junk_length: u8) -> Vec<u8> {
   result
 }
 
-fn read_watermark(filepath: PathBuf, password: String) {}
+fn read_watermark(filepath: PathBuf, password: String) {
+  let mut raw = read_file(filepath);
+}
 
 fn write_watermark(filepath: PathBuf, watermark: String, password: String) {
   let mut raw = read_file(filepath);
   let mut watermark = watermark.as_bytes().to_vec();
   let password = password.as_bytes();
+  watermark = xor(&watermark, password);
   let mut junk = generate_junk(8);
   raw.append(&mut junk);
   raw.append(&mut watermark);
-  xor(&mut raw, password);
 
   let watermarked_name = String::from("watermarked.bin");
   let path_watermarked = resolve_path(&watermarked_name);
-  println!("Watermarked Path: {}", path_watermarked.display());
-
   let mut watermarked = File::create(path_watermarked).unwrap();
   watermarked
     .write_all(&raw)
